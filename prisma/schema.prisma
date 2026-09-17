@@ -1,12 +1,13 @@
 // Football Eliminator: Last Man Standing — data model
-// Enum-like fields are plain Strings (SQLite has no native enum support); the
-// permitted values are enforced in the TypeScript layer — see src/lib/enums.ts.
+// Enum-like fields are plain Strings (kept from the original SQLite-compatible
+// schema); the permitted values are enforced in the TypeScript layer — see
+// src/lib/enums.ts.
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
