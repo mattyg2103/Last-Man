@@ -1,0 +1,241 @@
+// Football Eliminator: Last Man Standing — data model
+// Enum-like fields are plain Strings (SQLite has no native enum support); the
+// permitted values are enforced in the TypeScript layer — see src/lib/enums.ts.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("CUSTOMER")
+  createdAt    DateTime @default(now())
+
+  gamesCreated  Game[]         @relation("GameCreatedBy")
+  entries       Entry[]
+  notifications Notification[]
+  announcements Announcement[]
+  auditLogs     AuditLog[]
+}
+
+model League {
+  id    String @id @default(cuid())
+  name  String @unique
+  code  String @unique
+  teams Team[]
+
+  gameLeagues GameLeague[]
+  fixtures    Fixture[]
+}
+
+model Team {
+  id       String @id @default(cuid())
+  name     String
+  shortName String
+  rank     Int    @default(999)
+  leagueId String
+  league   League @relation(fields: [leagueId], references: [id], onDelete: Cascade)
+
+  homeFixtures Fixture[] @relation("HomeTeam")
+  awayFixtures Fixture[] @relation("AwayTeam")
+  selections   Selection[]
+
+  @@unique([leagueId, name])
+}
+
+model Game {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  entryFeePence Int    @default(2000)
+  startDate   DateTime
+  status      String   @default("OPEN")
+  createdById String
+  createdBy   User     @relation("GameCreatedBy", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+
+  rules       GameRule?
+  gameLeagues GameLeague[]
+  entries     Entry[]
+  rounds      Round[]
+  announcements Announcement[]
+  auditLogs   AuditLog[]
+  notifications Notification[]
+}
+
+model GameLeague {
+  id      String @id @default(cuid())
+  gameId  String
+  game    Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  leagueId String
+  league  League @relation(fields: [leagueId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, leagueId])
+}
+
+model GameRule {
+  id     String @id @default(cuid())
+  gameId String @unique
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  selectionsPerRound   Int     @default(1)
+  teamMustWin          Boolean @default(true)
+  drawEliminates       Boolean @default(true)
+  lossEliminates       Boolean @default(true)
+  freezeUsedTeams      Boolean @default(true)
+  winningTeamReturns   Boolean @default(false)
+  winningTeamReturnsAfterRounds Int?
+
+  allowReBuy     Boolean @default(true)
+  reBuyRounds    String  @default("1")
+  reBuyCount     Int     @default(1)
+  reBuyCostPence Int     @default(2000)
+  reBuyInstructions String @default("Contact the administrator to arrange your re-buy payment.")
+
+  deadlineDay  String  @default("FRI")
+  deadlineTime String  @default("15:00")
+
+  allowChangeBeforeDeadline Boolean @default(true)
+  missedDeadlineAction String @default("AUTO_ASSIGN")
+  defaultTeamStrategy  String  @default("LOWEST_ELIGIBLE")
+  defaultLeagueAlternate Boolean @default(true)
+  postponedHandling String @default("Participant selects a replacement team from remaining eligible fixtures in the round.")
+
+  selectionsVisibility String @default("HIDDEN_UNTIL_DEADLINE")
+  showEliminatedOnLeaderboard Boolean @default(true)
+
+  paymentInstructions String @default("Please pay your entry fee by bank transfer using your full name as the reference.")
+  freeTextRules String @default("")
+
+  updatedAt DateTime @updatedAt
+}
+
+model Entry {
+  id        String   @id @default(cuid())
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  status    String   @default("ACTIVE")
+  paymentStatus String @default("NOT_CONFIRMED")
+  paymentNotifiedAt DateTime?
+  reBuysUsed Int @default(0)
+  eliminatedRoundId String?
+  eliminatedRound   Round?  @relation("EliminatedInRound", fields: [eliminatedRoundId], references: [id])
+  joinedAt  DateTime @default(now())
+
+  selections Selection[]
+  reBuyRequests ReBuyRequest[]
+
+  @@unique([gameId, userId])
+}
+
+model Round {
+  id        String   @id @default(cuid())
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  name      String
+  gameWeek  Int
+  order     Int
+  opensAt   DateTime
+  deadlineAt DateTime
+  status    String   @default("SCHEDULED")
+  eliminatedEntries Entry[] @relation("EliminatedInRound")
+
+  fixtures   Fixture[]
+  selections Selection[]
+  reBuyRequests ReBuyRequest[]
+
+  @@unique([gameId, order])
+}
+
+model Fixture {
+  id         String   @id @default(cuid())
+  roundId    String
+  round      Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  leagueId   String
+  league     League   @relation(fields: [leagueId], references: [id])
+  homeTeamId String
+  homeTeam   Team     @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeamId String
+  awayTeam   Team     @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  kickoff    DateTime
+  status     String   @default("SCHEDULED")
+  homeScore  Int?
+  awayScore  Int?
+  result     String?
+
+  selections Selection[]
+}
+
+model Selection {
+  id          String   @id @default(cuid())
+  entryId     String
+  entry       Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  roundId     String
+  round       Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  teamId      String
+  team        Team     @relation(fields: [teamId], references: [id])
+  fixtureId   String
+  fixture     Fixture  @relation(fields: [fixtureId], references: [id])
+  slot        Int      @default(0)
+  isAutomatic Boolean  @default(false)
+  isReplacement Boolean @default(false)
+  submittedAt DateTime @default(now())
+  outcome     String   @default("PENDING")
+
+  @@unique([entryId, roundId, slot])
+}
+
+model ReBuyRequest {
+  id        String   @id @default(cuid())
+  entryId   String
+  entry     Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  roundId   String
+  round     Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  status    String   @default("REQUESTED")
+  costPence Int
+  requestedAt DateTime @default(now())
+  decidedAt DateTime?
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameId    String?
+  game      Game?    @relation(fields: [gameId], references: [id])
+  type      String
+  message   String
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  title     String
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String
+  actor     User     @relation(fields: [actorId], references: [id])
+  gameId    String?
+  game      Game?    @relation(fields: [gameId], references: [id])
+  action    String
+  details   String   @default("")
+  createdAt DateTime @default(now())
+}
