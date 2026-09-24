@@ -22,7 +22,7 @@ export default async function GameRulesPage({ params }: { params: Promise<{ game
     ["Re-buys allowed", rules.allowReBuy ? `Yes — ${rules.reBuyCount} allowed, in round(s) ${rules.reBuyRounds}, at ${formatMoney(rules.reBuyCostPence)} each` : "No"],
     ["Weekly submission deadline", `${rules.deadlineDay} ${rules.deadlineTime}`],
     ["Can change selection before deadline", rules.allowChangeBeforeDeadline ? "Yes" : "No"],
-    ["If you miss the deadline", rules.missedDeadlineAction === "AUTO_ASSIGN" ? "A default team is automatically assigned" : rules.missedDeadlineAction === "ELIMINATE" ? "You are eliminated" : "No automatic action is taken"],
+    ["If you miss the deadline", rules.missedDeadlineAction === "AUTO_ASSIGN" ? "A default team is automatically assigned" : rules.missedDeadlineAction === "ELIMINATE" ? "You are eliminated" : "The administrator will choose a team for you"],
     ["Default team alternates leagues each round", rules.defaultLeagueAlternate ? "Yes" : "No"],
     ["Postponed / cancelled fixtures", rules.postponedHandling],
     ["Selection visibility to others", rules.selectionsVisibility === "IMMEDIATE" ? "Visible immediately" : rules.selectionsVisibility === "HIDDEN_UNTIL_DEADLINE" ? "Hidden until the deadline" : "Hidden until kick-off"],

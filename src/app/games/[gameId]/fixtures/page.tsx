@@ -36,8 +36,15 @@ export default async function FixturesPage({ params }: { params: Promise<{ gameI
                     <div>
                       <p className="text-xs text-gray-500">{f.league.name} · {formatDateTime(f.kickoff)}</p>
                       <p className="font-medium">
-                        {f.homeTeam.name} {f.homeScore ?? ""} {f.status === "COMPLETED" ? "-" : "v"} {f.awayScore ?? ""} {f.awayTeam.name}
+                        <span className={f.result === "HOME" ? "font-bold" : ""}>{f.homeTeam.name}</span>
+                        {" v "}
+                        <span className={f.result === "AWAY" ? "font-bold" : ""}>{f.awayTeam.name}</span>
                       </p>
+                      {f.status === "COMPLETED" && (
+                        <p className="text-xs text-pitch-700 mt-0.5">
+                          {f.result === "DRAW" ? "Full time: Draw" : `Full time: ${f.result === "HOME" ? f.homeTeam.name : f.awayTeam.name} won`}
+                        </p>
+                      )}
                     </div>
                     <FixtureStatusBadge status={f.status} />
                   </li>

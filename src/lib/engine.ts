@@ -27,6 +27,8 @@ async function getFrozenTeamIds(entryId: string, gameId: string, currentRoundOrd
   const rules = await prisma.gameRule.findUnique({ where: { gameId } });
   if (!rules || !rules.freezeUsedTeams) return new Set<string>();
 
+  const entry = await prisma.entry.findUnique({ where: { id: entryId }, select: { eliminatedRoundId: true, reBuysUsed: true } });
+
   const priorSelections = await prisma.selection.findMany({
     where: { entryId, round: { order: { lt: currentRoundOrder } } },
     include: { round: true },
@@ -34,6 +36,10 @@ async function getFrozenTeamIds(entryId: string, gameId: string, currentRoundOrd
 
   const frozen = new Set<string>();
   for (const sel of priorSelections) {
+    // Once a re-buy has been used, the team the participant went out with in the
+    // round that eliminated them is released again — they get a genuine fresh start.
+    if (entry && entry.reBuysUsed > 0 && sel.roundId === entry.eliminatedRoundId) continue;
+
     if (rules.winningTeamReturns && rules.winningTeamReturnsAfterRounds != null) {
       const gap = currentRoundOrder - sel.round.order;
       if (gap > rules.winningTeamReturnsAfterRounds) continue; // team is available again

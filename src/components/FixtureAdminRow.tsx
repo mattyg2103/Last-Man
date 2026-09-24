@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateFixtureStatus, enterFixtureResult, deleteFixture } from "@/lib/actions/admin";
 import { FixtureStatusBadge } from "@/components/StatusBadge";
@@ -10,8 +10,7 @@ type Fixture = {
   awayTeamName: string;
   kickoff: string;
   status: string;
-  homeScore: number | null;
-  awayScore: number | null;
+  result: string | null;
 };
 
 const statusOptions = ["SCHEDULED", "IN_PROGRESS", "COMPLETED", "POSTPONED", "CANCELLED", "ABANDONED"];
@@ -19,8 +18,6 @@ const statusOptions = ["SCHEDULED", "IN_PROGRESS", "COMPLETED", "POSTPONED", "CA
 export default function FixtureAdminRow({ fixture }: { fixture: Fixture }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [homeScore, setHomeScore] = useState(fixture.homeScore ?? 0);
-  const [awayScore, setAwayScore] = useState(fixture.awayScore ?? 0);
 
   function changeStatus(status: string) {
     const formData = new FormData();
@@ -32,12 +29,10 @@ export default function FixtureAdminRow({ fixture }: { fixture: Fixture }) {
     });
   }
 
-  function submitResult(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function setResult(result: "HOME" | "DRAW" | "AWAY") {
     const formData = new FormData();
     formData.set("fixtureId", fixture.id);
-    formData.set("homeScore", String(homeScore));
-    formData.set("awayScore", String(awayScore));
+    formData.set("result", result);
     startTransition(async () => {
       await enterFixtureResult(formData);
       router.refresh();
@@ -61,12 +56,32 @@ export default function FixtureAdminRow({ fixture }: { fixture: Fixture }) {
         <p className="font-medium">{fixture.homeTeamName} v {fixture.awayTeamName}</p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <form onSubmit={submitResult} className="flex items-center gap-1">
-          <input type="number" min={0} className="input !py-1 w-14" value={homeScore} onChange={(e) => setHomeScore(Number(e.target.value))} aria-label="Home score" />
-          <span>-</span>
-          <input type="number" min={0} className="input !py-1 w-14" value={awayScore} onChange={(e) => setAwayScore(Number(e.target.value))} aria-label="Away score" />
-          <button className="btn-secondary !py-1" type="submit" disabled={pending}>Save result</button>
-        </form>
+        <div className="flex items-center gap-1" role="group" aria-label="Result">
+          <button
+            type="button"
+            onClick={() => setResult("HOME")}
+            disabled={pending}
+            className={fixture.result === "HOME" ? "btn-primary !py-1 text-xs" : "btn-secondary !py-1 text-xs"}
+          >
+            {fixture.homeTeamName} win
+          </button>
+          <button
+            type="button"
+            onClick={() => setResult("DRAW")}
+            disabled={pending}
+            className={fixture.result === "DRAW" ? "btn-primary !py-1 text-xs" : "btn-secondary !py-1 text-xs"}
+          >
+            Draw
+          </button>
+          <button
+            type="button"
+            onClick={() => setResult("AWAY")}
+            disabled={pending}
+            className={fixture.result === "AWAY" ? "btn-primary !py-1 text-xs" : "btn-secondary !py-1 text-xs"}
+          >
+            {fixture.awayTeamName} win
+          </button>
+        </div>
         <select className="input !py-1 w-auto" value={fixture.status} onChange={(e) => changeStatus(e.target.value)} disabled={pending} aria-label="Fixture status">
           {statusOptions.map((s) => <option key={s} value={s}>{s.replaceAll("_", " ")}</option>)}
         </select>

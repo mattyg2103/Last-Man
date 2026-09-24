@@ -35,12 +35,17 @@ export default async function LeaderboardPage({ params }: { params: Promise<{ ga
     const previous = e.selections.filter((s) => s.roundId !== currentRound?.id);
     return { entry: e, roundsSurvived, currentSel, previous };
   });
-  rows.sort((a, b) => b.roundsSurvived - a.roundsSurvived);
+  const statusOrder: Record<string, number> = { WINNER: 0, ACTIVE: 1, REBUY_ELIGIBLE: 2, ELIMINATED: 3 };
+  rows.sort((a, b) => {
+    const order = (statusOrder[a.entry.status] ?? 9) - (statusOrder[b.entry.status] ?? 9);
+    return order !== 0 ? order : a.entry.user.name.localeCompare(b.entry.user.name);
+  });
 
   return (
     <div>
       <GameSubNav gameId={gameId} />
-      <h1 className="page-title mb-4">Leaderboard</h1>
+      <h1 className="page-title mb-1">Leaderboard</h1>
+      <p className="text-gray-600 mb-4">Who&apos;s picked what, round by round — grouped by status rather than ranked.</p>
       <div className="overflow-x-auto card p-0">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-left text-gray-500">

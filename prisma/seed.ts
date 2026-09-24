@@ -124,11 +124,11 @@ async function main() {
             reBuyRounds: "1",
             reBuyCount: 1,
             reBuyCostPence: 2000,
-            reBuyInstructions: "One re-buy is available during round 1, subject to administrator approval. Pay £20 by bank transfer using your full name as the reference.",
+            reBuyInstructions: "If you're eliminated in round 1, one re-buy is available once round 1 has concluded, subject to administrator approval. Pay £20 by bank transfer using your full name as the reference. The team you went out with in round 1 becomes available to pick again.",
             deadlineDay: "FRI",
             deadlineTime: "15:00",
             allowChangeBeforeDeadline: true,
-            missedDeadlineAction: "AUTO_ASSIGN",
+            missedDeadlineAction: "NONE",
             defaultTeamStrategy: "LOWEST_ELIGIBLE",
             defaultLeagueAlternate: true,
             postponedHandling:

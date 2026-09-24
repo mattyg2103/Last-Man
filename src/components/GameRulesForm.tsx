@@ -124,10 +124,14 @@ export default function GameRulesForm({ gameId, rules }: { gameId: string; rules
         <div>
           <label className="label" htmlFor="missedDeadlineAction">If a participant misses the deadline</label>
           <select className="input" id="missedDeadlineAction" name="missedDeadlineAction" defaultValue={rules.missedDeadlineAction}>
-            <option value="AUTO_ASSIGN">Automatically assign a default team</option>
-            <option value="ELIMINATE">Eliminate the participant</option>
-            <option value="NONE">Take no automatic action</option>
+            <option value="NONE">Administrator chooses their team manually (recommended)</option>
+            <option value="AUTO_ASSIGN">Automatically assign the lowest-ranked eligible team</option>
+            <option value="ELIMINATE">Eliminate the participant automatically</option>
           </select>
+          <p className="text-xs text-gray-500 mt-1">
+            With &ldquo;Administrator chooses&rdquo;, participants who miss the deadline appear on the Missed selections page,
+            where you pick their team directly — nothing is assigned automatically.
+          </p>
         </div>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="defaultLeagueAlternate" defaultChecked={rules.defaultLeagueAlternate} /> Alternate the default team's league each round</label>
         <div>

@@ -44,7 +44,7 @@ export async function createGame(formData: FormData): Promise<ActionResult> {
       rules: {
         create: {
           reBuyCostPence: entryFeePence,
-          reBuyInstructions: `One re-buy is available, subject to administrator approval. Pay ${(entryFeePence / 100).toFixed(2)} using your full name as the reference.`,
+          reBuyInstructions: `If you're eliminated in round 1, one re-buy is available once round 1 has concluded, subject to administrator approval. Pay £${(entryFeePence / 100).toFixed(2)} using your full name as the reference. The team you went out with in round 1 becomes available to pick again.`,
           paymentInstructions: `Please pay your entry fee by bank transfer to the administrator using your full name as the payment reference.`,
         },
       },
@@ -113,7 +113,7 @@ export async function updateGameRules(formData: FormData): Promise<ActionResult>
       deadlineDay: str(formData, "deadlineDay", "FRI"),
       deadlineTime: str(formData, "deadlineTime", "15:00"),
       allowChangeBeforeDeadline: bool(formData, "allowChangeBeforeDeadline"),
-      missedDeadlineAction: str(formData, "missedDeadlineAction", "AUTO_ASSIGN") as any,
+      missedDeadlineAction: str(formData, "missedDeadlineAction", "NONE") as any,
       defaultTeamStrategy: str(formData, "defaultTeamStrategy", "LOWEST_ELIGIBLE"),
       defaultLeagueAlternate: bool(formData, "defaultLeagueAlternate"),
       postponedHandling: str(formData, "postponedHandling"),
@@ -318,6 +318,60 @@ export async function createFixture(formData: FormData): Promise<ActionResult> {
   return { ok: true, message: "Fixture added." };
 }
 
+const BULK_LINE_RE = /^\s*(.+?)\s+v(?:s)?\.?\s+(.+?)\s*,\s*(\d{1,2})\/(\d{1,2})\/(\d{2,4})\s+(\d{1,2}):(\d{2})\s*$/i;
+
+export async function bulkCreateFixtures(formData: FormData): Promise<ActionResult> {
+  const admin = await requireAdmin();
+  const roundId = str(formData, "roundId");
+  const leagueId = str(formData, "leagueId");
+  const text = str(formData, "text");
+
+  const round = await prisma.round.findUniqueOrThrow({ where: { id: roundId } });
+  const teams = await prisma.team.findMany({ where: { leagueId } });
+  const byName = new Map(teams.map((t) => [t.name.toLowerCase(), t]));
+
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (lines.length === 0) return { ok: false, error: "Paste one fixture per line." };
+
+  const toCreate: { roundId: string; leagueId: string; homeTeamId: string; awayTeamId: string; kickoff: Date }[] = [];
+  const errors: string[] = [];
+
+  for (const line of lines) {
+    const m = line.match(BULK_LINE_RE);
+    if (!m) {
+      errors.push(`"${line}" — expected "Home Team v Away Team, DD/MM/YYYY HH:MM".`);
+      continue;
+    }
+    const [, homeName, awayName, day, month, yearRaw, hour, minute] = m;
+    const home = byName.get(homeName.trim().toLowerCase());
+    const away = byName.get(awayName.trim().toLowerCase());
+    if (!home) { errors.push(`"${line}" — no team named "${homeName.trim()}" in this league.`); continue; }
+    if (!away) { errors.push(`"${line}" — no team named "${awayName.trim()}" in this league.`); continue; }
+    if (home.id === away.id) { errors.push(`"${line}" — home and away team are the same.`); continue; }
+
+    const year = yearRaw.length === 2 ? 2000 + Number(yearRaw) : Number(yearRaw);
+    const kickoff = new Date(year, Number(month) - 1, Number(day), Number(hour), Number(minute));
+    if (isNaN(kickoff.getTime())) { errors.push(`"${line}" — invalid date or time.`); continue; }
+
+    toCreate.push({ roundId, leagueId, homeTeamId: home.id, awayTeamId: away.id, kickoff });
+  }
+
+  if (toCreate.length > 0) {
+    await prisma.fixture.createMany({ data: toCreate });
+    await logAudit(admin.id, "BULK_CREATE_FIXTURES", { gameId: round.gameId, details: `Added ${toCreate.length} fixture(s) to ${round.name} by paste.` });
+  }
+
+  revalidatePath(`/admin/games/${round.gameId}/rounds/${roundId}`);
+
+  if (toCreate.length === 0) {
+    return { ok: false, error: `No fixtures added. ${errors.join(" ")}` };
+  }
+  if (errors.length > 0) {
+    return { ok: true, message: `Added ${toCreate.length} fixture(s). ${errors.length} line(s) skipped: ${errors.join(" ")}` };
+  }
+  return { ok: true, message: `Added ${toCreate.length} fixture(s).` };
+}
+
 export async function deleteFixture(formData: FormData): Promise<ActionResult> {
   const admin = await requireAdmin();
   const fixtureId = str(formData, "fixtureId");
@@ -355,17 +409,17 @@ export async function updateFixtureStatus(formData: FormData): Promise<ActionRes
 export async function enterFixtureResult(formData: FormData): Promise<ActionResult> {
   const admin = await requireAdmin();
   const fixtureId = str(formData, "fixtureId");
-  const homeScore = num(formData, "homeScore", 0);
-  const awayScore = num(formData, "awayScore", 0);
-  const result = homeScore === awayScore ? "DRAW" : homeScore > awayScore ? "HOME" : "AWAY";
+  const result = str(formData, "result"); // "HOME" | "DRAW" | "AWAY"
+  if (!["HOME", "DRAW", "AWAY"].includes(result)) return { ok: false, error: "Choose home win, draw or away win." };
 
   const fixture = await prisma.fixture.update({
     where: { id: fixtureId },
-    data: { homeScore, awayScore, result, status: "COMPLETED" },
-    include: { round: true },
+    data: { result, status: "COMPLETED" },
+    include: { round: true, homeTeam: true, awayTeam: true },
   });
 
-  await logAudit(admin.id, "ENTER_FIXTURE_RESULT", { gameId: fixture.round.gameId, details: `Recorded result ${homeScore}-${awayScore}.` });
+  const label = result === "HOME" ? `${fixture.homeTeam.name} win` : result === "AWAY" ? `${fixture.awayTeam.name} win` : "Draw";
+  await logAudit(admin.id, "ENTER_FIXTURE_RESULT", { gameId: fixture.round.gameId, details: `Recorded result: ${label}.` });
   revalidatePath(`/admin/games/${fixture.round.gameId}/rounds/${fixture.roundId}`);
   return { ok: true, message: "Result recorded." };
 }

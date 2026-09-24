@@ -104,7 +104,7 @@ model GameRule {
   deadlineTime String  @default("15:00")
 
   allowChangeBeforeDeadline Boolean @default(true)
-  missedDeadlineAction String @default("AUTO_ASSIGN")
+  missedDeadlineAction String @default("NONE")
   defaultTeamStrategy  String  @default("LOWEST_ELIGIBLE")
   defaultLeagueAlternate Boolean @default(true)
   postponedHandling String @default("Participant selects a replacement team from remaining eligible fixtures in the round.")

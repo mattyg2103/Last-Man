@@ -5,6 +5,7 @@ import AdminGameSubNav from "@/components/AdminGameSubNav";
 import { RoundStatusBadge } from "@/components/StatusBadge";
 import RoundStatusControl from "@/components/RoundStatusControl";
 import FixtureForm from "@/components/FixtureForm";
+import BulkFixtureForm from "@/components/BulkFixtureForm";
 import FixtureAdminRow from "@/components/FixtureAdminRow";
 import FormAction from "@/components/FormAction";
 import { runProcessResults } from "@/lib/actions/admin";
@@ -38,6 +39,9 @@ export default async function RoundDetailPage({ params }: { params: Promise<{ ga
       <h2 className="section-title">Add a fixture</h2>
       <FixtureForm roundId={round.id} leagues={gameLeagues.map((gl) => ({ id: gl.league.id, name: gl.league.name, teams: gl.league.teams }))} />
 
+      <h2 className="section-title mt-6">Add several fixtures at once</h2>
+      <BulkFixtureForm roundId={round.id} leagues={gameLeagues.map((gl) => ({ id: gl.league.id, name: gl.league.name }))} />
+
       <h2 className="section-title mt-6">Fixtures</h2>
       <div className="space-y-2">
         {round.fixtures.length === 0 && <p className="text-gray-500">No fixtures added yet.</p>}
@@ -50,8 +54,7 @@ export default async function RoundDetailPage({ params }: { params: Promise<{ ga
               awayTeamName: f.awayTeam.name,
               kickoff: f.kickoff.toISOString(),
               status: f.status,
-              homeScore: f.homeScore,
-              awayScore: f.awayScore,
+              result: f.result,
             }}
           />
         ))}
