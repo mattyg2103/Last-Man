@@ -32,8 +32,8 @@ export default async function ResultsPage({ params }: { params: Promise<{ gameId
                 <p className="font-semibold">{r.name}</p>
                 <RoundStatusBadge status={r.status} />
               </div>
-              <p className="text-sm text-gray-500 mt-1">{results}/{r.fixtures.length} results recorded · {r.selections.length} selection(s)</p>
-              <p className="text-sm text-pitch-700 mt-1 underline">Enter results & process round</p>
+              <p className="text-sm text-slate-400 mt-1">{results}/{r.fixtures.length} results recorded · {r.selections.length} selection(s)</p>
+              <p className="text-sm text-lime-300 mt-1 underline">Enter results & process round</p>
             </Link>
           );
         })}
@@ -42,11 +42,11 @@ export default async function ResultsPage({ params }: { params: Promise<{ gameId
       <h2 className="section-title">Eliminated participants</h2>
       <div className="overflow-x-auto card p-0">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-500">
+          <thead className="bg-white/5 text-left text-slate-400">
             <tr><th className="px-4 py-2">Participant</th><th className="px-4 py-2">Eliminated in</th></tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
-            {eliminatedEntries.length === 0 && <tr><td className="px-4 py-2 text-gray-500" colSpan={2}>No eliminations yet.</td></tr>}
+          <tbody className="divide-y divide-white/5">
+            {eliminatedEntries.length === 0 && <tr><td className="px-4 py-2 text-slate-400" colSpan={2}>No eliminations yet.</td></tr>}
             {eliminatedEntries.map((e) => (
               <tr key={e.id}>
                 <td className="px-4 py-2">{e.user.name}</td>

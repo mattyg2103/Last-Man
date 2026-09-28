@@ -15,7 +15,7 @@ export default async function AuditHistoryPage() {
       <h1 className="page-title mb-4">Administrator audit history</h1>
       <div className="overflow-x-auto card p-0">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-500">
+          <thead className="bg-white/5 text-left text-slate-400">
             <tr>
               <th className="px-4 py-2">When</th>
               <th className="px-4 py-2">Administrator</th>
@@ -24,14 +24,14 @@ export default async function AuditHistoryPage() {
               <th className="px-4 py-2">Details</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-white/5">
             {logs.map((l) => (
               <tr key={l.id}>
-                <td className="px-4 py-2 whitespace-nowrap text-gray-500">{formatDateTime(l.createdAt)}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-slate-400">{formatDateTime(l.createdAt)}</td>
                 <td className="px-4 py-2">{l.actor.name}</td>
                 <td className="px-4 py-2">{l.game?.name ?? "—"}</td>
                 <td className="px-4 py-2">{l.action.replaceAll("_", " ")}</td>
-                <td className="px-4 py-2 text-gray-500">{l.details}</td>
+                <td className="px-4 py-2 text-slate-400">{l.details}</td>
               </tr>
             ))}
           </tbody>

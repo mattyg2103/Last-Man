@@ -56,7 +56,7 @@ export default function CreateGameForm({ leagues }: { leagues: { id: string; nam
           ))}
         </div>
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-slate-400">
         The game is created with the default rules template (weekly deadline Friday 3pm, one re-buy in round 1 at
         the entry fee cost, frozen used teams). You can customise every rule afterwards on the game&apos;s Rules page.
       </p>

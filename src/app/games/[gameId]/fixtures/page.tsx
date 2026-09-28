@@ -28,20 +28,20 @@ export default async function FixturesPage({ params }: { params: Promise<{ gameI
               <RoundStatusBadge status={round.status} />
             </div>
             {round.fixtures.length === 0 ? (
-              <p className="text-sm text-gray-500">Fixtures have not been published for this round yet.</p>
+              <p className="text-sm text-slate-400">Fixtures have not been published for this round yet.</p>
             ) : (
-              <ul className="divide-y divide-gray-100">
+              <ul className="divide-y divide-white/5">
                 {round.fixtures.map((f) => (
                   <li key={f.id} className="py-2 flex items-center justify-between gap-3 text-sm">
                     <div>
-                      <p className="text-xs text-gray-500">{f.league.name} · {formatDateTime(f.kickoff)}</p>
+                      <p className="text-xs text-slate-400">{f.league.name} · {formatDateTime(f.kickoff)}</p>
                       <p className="font-medium">
                         <span className={f.result === "HOME" ? "font-bold" : ""}>{f.homeTeam.name}</span>
                         {" v "}
                         <span className={f.result === "AWAY" ? "font-bold" : ""}>{f.awayTeam.name}</span>
                       </p>
                       {f.status === "COMPLETED" && (
-                        <p className="text-xs text-pitch-700 mt-0.5">
+                        <p className="text-xs text-lime-300 mt-0.5">
                           {f.result === "DRAW" ? "Full time: Draw" : `Full time: ${f.result === "HOME" ? f.homeTeam.name : f.awayTeam.name} won`}
                         </p>
                       )}

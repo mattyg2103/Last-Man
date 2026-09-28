@@ -45,10 +45,10 @@ export default async function LeaderboardPage({ params }: { params: Promise<{ ga
     <div>
       <GameSubNav gameId={gameId} />
       <h1 className="page-title mb-1">Leaderboard</h1>
-      <p className="text-gray-600 mb-4">Who&apos;s picked what, round by round — grouped by status rather than ranked.</p>
+      <p className="text-slate-300 mb-4">Who&apos;s picked what, round by round — grouped by status rather than ranked.</p>
       <div className="overflow-x-auto card p-0">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-500">
+          <thead className="bg-white/5 text-left text-slate-400">
             <tr>
               <th className="px-4 py-2">Participant</th>
               <th className="px-4 py-2">Status</th>
@@ -58,23 +58,23 @@ export default async function LeaderboardPage({ params }: { params: Promise<{ ga
               <th className="px-4 py-2">Previous picks</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-white/5">
             {rows.map(({ entry: e, roundsSurvived, currentSel, previous }) => (
-              <tr key={e.id} className={e.userId === user.id ? "bg-pitch-50" : ""}>
+              <tr key={e.id} className={e.userId === user.id ? "bg-lime-400/10" : ""}>
                 <td className="px-4 py-2 font-medium">{e.user.name}{e.userId === user.id && " (you)"}</td>
                 <td className="px-4 py-2"><EntryStatusBadge status={e.status} /></td>
                 <td className="px-4 py-2">
                   {!currentRound
                     ? "—"
                     : !currentRoundVisible
-                    ? <span className="text-gray-400">Hidden until deadline</span>
+                    ? <span className="text-slate-500">Hidden until deadline</span>
                     : currentSel
                     ? <>{currentSel.team.name}{currentSel.isAutomatic && <span className="badge-neutral ml-1 text-xs">Auto</span>}</>
-                    : <span className="text-gray-400">Not yet selected</span>}
+                    : <span className="text-slate-500">Not yet selected</span>}
                 </td>
                 <td className="px-4 py-2">{roundsSurvived}</td>
                 <td className="px-4 py-2">{e.reBuysUsed}</td>
-                <td className="px-4 py-2 text-gray-500">
+                <td className="px-4 py-2 text-slate-400">
                   {previous.length === 0 ? "—" : previous.map((s) => s.team.name).join(", ")}
                 </td>
               </tr>

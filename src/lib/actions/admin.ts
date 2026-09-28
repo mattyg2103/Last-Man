@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/session";
 import { logAudit } from "@/lib/audit";
 import { notify, notifyMany } from "@/lib/notifications";
 import { processMissedDeadlines, processRoundResults, useReBuy } from "@/lib/engine";
+import { parseUkDateTimeLocal, ukTimeToDate } from "@/lib/ukTime";
 
 export type ActionResult = { ok: true; message?: string; gameId?: string } | { ok: false; error: string };
 
@@ -268,16 +269,16 @@ export async function createRound(formData: FormData): Promise<ActionResult> {
   const name = str(formData, "name").trim();
   const gameWeek = num(formData, "gameWeek", 1);
   const order = num(formData, "order", 1);
-  const opensAt = new Date(str(formData, "opensAt"));
-  const deadlineAt = new Date(str(formData, "deadlineAt"));
+  const opensAt = parseUkDateTimeLocal(str(formData, "opensAt"));
+  const deadlineAt = parseUkDateTimeLocal(str(formData, "deadlineAt"));
 
-  if (!name || isNaN(deadlineAt.getTime())) return { ok: false, error: "Please provide a round name and deadline." };
+  if (!name || !deadlineAt) return { ok: false, error: "Please provide a round name and deadline." };
 
   const existing = await prisma.round.findUnique({ where: { gameId_order: { gameId, order } } });
   if (existing) return { ok: false, error: `Round order ${order} already exists for this game.` };
 
   await prisma.round.create({
-    data: { gameId, name, gameWeek, order, opensAt: isNaN(opensAt.getTime()) ? new Date() : opensAt, deadlineAt },
+    data: { gameId, name, gameWeek, order, opensAt: opensAt ?? new Date(), deadlineAt },
   });
   await logAudit(admin.id, "CREATE_ROUND", { gameId, details: `Created ${name}.` });
   revalidatePath(`/admin/games/${gameId}/rounds`);
@@ -306,10 +307,10 @@ export async function createFixture(formData: FormData): Promise<ActionResult> {
   const leagueId = str(formData, "leagueId");
   const homeTeamId = str(formData, "homeTeamId");
   const awayTeamId = str(formData, "awayTeamId");
-  const kickoff = new Date(str(formData, "kickoff"));
+  const kickoff = parseUkDateTimeLocal(str(formData, "kickoff"));
 
   if (homeTeamId === awayTeamId) return { ok: false, error: "Home and away teams must be different." };
-  if (isNaN(kickoff.getTime())) return { ok: false, error: "Please provide a valid kick-off date and time." };
+  if (!kickoff) return { ok: false, error: "Please provide a valid kick-off date and time." };
 
   const round = await prisma.round.findUniqueOrThrow({ where: { id: roundId } });
   await prisma.fixture.create({ data: { roundId, leagueId, homeTeamId, awayTeamId, kickoff } });
@@ -350,7 +351,7 @@ export async function bulkCreateFixtures(formData: FormData): Promise<ActionResu
     if (home.id === away.id) { errors.push(`"${line}" — home and away team are the same.`); continue; }
 
     const year = yearRaw.length === 2 ? 2000 + Number(yearRaw) : Number(yearRaw);
-    const kickoff = new Date(year, Number(month) - 1, Number(day), Number(hour), Number(minute));
+    const kickoff = ukTimeToDate(year, Number(month), Number(day), Number(hour), Number(minute));
     if (isNaN(kickoff.getTime())) { errors.push(`"${line}" — invalid date or time.`); continue; }
 
     toCreate.push({ roundId, leagueId, homeTeamId: home.id, awayTeamId: away.id, kickoff });

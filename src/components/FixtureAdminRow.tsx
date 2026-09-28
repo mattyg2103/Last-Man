@@ -50,9 +50,9 @@ export default function FixtureAdminRow({ fixture }: { fixture: Fixture }) {
   }
 
   return (
-    <div className="border border-gray-100 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div className="border border-white/10 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
-        <p className="text-xs text-gray-500">{new Date(fixture.kickoff).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/London" })}</p>
+        <p className="text-xs text-slate-400">{fixture.kickoff}</p>
         <p className="font-medium">{fixture.homeTeamName} v {fixture.awayTeamName}</p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
@@ -86,7 +86,7 @@ export default function FixtureAdminRow({ fixture }: { fixture: Fixture }) {
           {statusOptions.map((s) => <option key={s} value={s}>{s.replaceAll("_", " ")}</option>)}
         </select>
         <FixtureStatusBadge status={fixture.status} />
-        <button className="btn-ghost !py-1 text-red-600" onClick={remove} disabled={pending}>Remove</button>
+        <button className="btn-ghost !py-1 text-rose-400" onClick={remove} disabled={pending}>Remove</button>
       </div>
     </div>
   );

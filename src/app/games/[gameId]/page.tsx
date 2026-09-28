@@ -29,7 +29,7 @@ export default async function GameOverviewPage({ params }: { params: Promise<{ g
       <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
         <div>
           <h1 className="page-title">{game.name}</h1>
-          <p className="text-gray-600 max-w-2xl">{game.description}</p>
+          <p className="text-slate-300 max-w-2xl">{game.description}</p>
         </div>
         <div className="flex flex-col items-end gap-2">
           <GameStatusBadge status={game.status} />
@@ -39,11 +39,11 @@ export default async function GameOverviewPage({ params }: { params: Promise<{ g
 
       <div className="grid md:grid-cols-3 gap-4 mb-6">
         <div className="card">
-          <p className="text-sm text-gray-500">Entry fee</p>
+          <p className="text-sm text-slate-400">Entry fee</p>
           <p className="text-xl font-bold">{formatMoney(game.entryFeePence)}</p>
           <div className="mt-2"><PaymentStatusBadge status={entry.paymentStatus} /></div>
-          <p className="text-xs text-gray-500 mt-2">{rules.paymentInstructions}</p>
-          <p className="text-xs text-gray-500 mt-1">Please use your full name as the payment reference.</p>
+          <p className="text-xs text-slate-400 mt-2">{rules.paymentInstructions}</p>
+          <p className="text-xs text-slate-400 mt-1">Please use your full name as the payment reference.</p>
           {entry.paymentStatus !== "PAID" && (
             <div className="mt-3">
               <FormAction
@@ -57,23 +57,23 @@ export default async function GameOverviewPage({ params }: { params: Promise<{ g
         </div>
 
         <div className="card">
-          <p className="text-sm text-gray-500">Started</p>
+          <p className="text-sm text-slate-400">Started</p>
           <p className="text-xl font-bold">{formatDate(game.startDate)}</p>
-          <p className="text-sm text-gray-500 mt-3">Re-buys used</p>
+          <p className="text-sm text-slate-400 mt-3">Re-buys used</p>
           <p className="text-lg font-semibold">{entry.reBuysUsed} / {rules.allowReBuy ? rules.reBuyCount : 0}</p>
         </div>
 
         <div className="card">
-          <p className="text-sm text-gray-500">Current round</p>
+          <p className="text-sm text-slate-400">Current round</p>
           {currentRound ? (
             <>
               <p className="text-xl font-bold">{currentRound.name}</p>
-              <p className="text-sm text-gray-500">Deadline {formatDateTime(currentRound.deadlineAt)}</p>
+              <p className="text-sm text-slate-400">Deadline {formatDateTime(currentRound.deadlineAt)}</p>
               <p className="text-sm mt-2">
                 {mySelection ? (
-                  <span className="text-pitch-700 font-medium">You picked {mySelection.team.name}{mySelection.isAutomatic ? " (auto-assigned)" : ""}</span>
+                  <span className="text-lime-300 font-medium">You picked {mySelection.team.name}{mySelection.isAutomatic ? " (auto-assigned)" : ""}</span>
                 ) : (
-                  <span className="text-accent-600 font-medium">No selection submitted yet</span>
+                  <span className="text-amber-300 font-medium">No selection submitted yet</span>
                 )}
               </p>
               {entry.status === "ACTIVE" && (
@@ -83,15 +83,15 @@ export default async function GameOverviewPage({ params }: { params: Promise<{ g
               )}
             </>
           ) : (
-            <p className="text-gray-500">No round currently open</p>
+            <p className="text-slate-400">No round currently open</p>
           )}
         </div>
       </div>
 
       {entry.status === "REBUY_ELIGIBLE" && (
-        <div className="card border-accent-400 bg-accent-50 mb-6">
-          <p className="font-semibold text-accent-600">You're eligible for a re-buy</p>
-          <p className="text-sm text-gray-700 mt-1">{rules.reBuyInstructions}</p>
+        <div className="card border-amber-400/40 bg-amber-400/10 mb-6">
+          <p className="font-semibold text-amber-300">You're eligible for a re-buy</p>
+          <p className="text-sm text-slate-200 mt-1">{rules.reBuyInstructions}</p>
           <div className="mt-3">
             <FormAction
               action={requestReBuy}

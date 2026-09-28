@@ -19,22 +19,22 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div>
         <h1 className="page-title">Welcome back, {user.name.split(" ")[0]}</h1>
-        <p className="text-gray-600">Here&apos;s what&apos;s happening across your games.</p>
+        <p className="text-slate-300">Here&apos;s what&apos;s happening across your games.</p>
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
         <div className="card">
-          <p className="text-sm text-gray-500">Games joined</p>
-          <p className="text-3xl font-bold">{entries.length}</p>
+          <p className="text-sm text-slate-400">Games joined</p>
+          <p className="stat-number">{entries.length}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Still active</p>
-          <p className="text-3xl font-bold">{entries.filter((e) => e.status === "ACTIVE").length}</p>
+          <p className="text-sm text-slate-400">Still active</p>
+          <p className="stat-number">{entries.filter((e) => e.status === "ACTIVE").length}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Unread notifications</p>
-          <p className="text-3xl font-bold">{unreadCount}</p>
-          <Link href="/notifications" className="text-sm text-pitch-700 underline">View notifications</Link>
+          <p className="text-sm text-slate-400">Unread notifications</p>
+          <p className="stat-number">{unreadCount}</p>
+          <Link href="/notifications" className="text-sm text-lime-300 underline">View notifications</Link>
         </div>
       </div>
 
@@ -44,8 +44,8 @@ export default async function DashboardPage() {
           <Link href="/games" className="btn-secondary">Browse & join games</Link>
         </div>
         {entries.length === 0 ? (
-          <div className="card text-center text-gray-500">
-            You haven&apos;t joined any games yet. <Link href="/games" className="text-pitch-700 underline">Browse available games</Link>.
+          <div className="card text-center text-slate-400">
+            You haven&apos;t joined any games yet. <Link href="/games" className="text-lime-300 underline">Browse available games</Link>.
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-4">
@@ -55,17 +55,17 @@ export default async function DashboardPage() {
                 <Link key={entry.id} href={`/games/${entry.gameId}`} className="card hover:shadow-md transition-shadow block">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <p className="font-semibold text-gray-900">{entry.game.name}</p>
-                      <p className="text-sm text-gray-500">{formatMoney(entry.game.entryFeePence)} entry</p>
+                      <p className="font-semibold text-white">{entry.game.name}</p>
+                      <p className="text-sm text-slate-400">{formatMoney(entry.game.entryFeePence)} entry</p>
                     </div>
                     <EntryStatusBadge status={entry.status} />
                   </div>
                   <div className="mt-3 flex items-center justify-between text-sm">
                     <GameStatusBadge status={entry.game.status} />
                     {openRound ? (
-                      <span className="text-accent-600 font-medium">Deadline {formatDateTime(openRound.deadlineAt)}</span>
+                      <span className="text-amber-300 font-medium">Deadline {formatDateTime(openRound.deadlineAt)}</span>
                     ) : (
-                      <span className="text-gray-400">No open round</span>
+                      <span className="text-slate-500">No open round</span>
                     )}
                   </div>
                 </Link>

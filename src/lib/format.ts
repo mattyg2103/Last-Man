@@ -24,6 +24,12 @@ export function formatTime(date: Date | string): string {
   }).format(d);
 }
 
+export function formatKickoff(date: Date | string): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  const weekday = new Intl.DateTimeFormat("en-GB", { weekday: "short", timeZone: LONDON_TZ }).format(d);
+  return `${weekday} ${formatDate(d)}, ${formatTime(d)}`;
+}
+
 export function formatDateTime(date: Date | string): string {
   return `${formatDate(date)} at ${formatTime(date)}`;
 }

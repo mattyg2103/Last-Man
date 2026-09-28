@@ -39,7 +39,7 @@ export default async function HelpPage() {
           {faqs.map((f) => (
             <div key={f.q} className="card">
               <p className="font-semibold">{f.q}</p>
-              <p className="text-sm text-gray-600 mt-1">{f.a}</p>
+              <p className="text-sm text-slate-300 mt-1">{f.a}</p>
             </div>
           ))}
         </div>

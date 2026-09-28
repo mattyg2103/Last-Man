@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { formatDateTime } from "@/lib/format";
+import { formatDateTime, formatKickoff } from "@/lib/format";
 import AdminGameSubNav from "@/components/AdminGameSubNav";
 import { RoundStatusBadge } from "@/components/StatusBadge";
 import RoundStatusControl from "@/components/RoundStatusControl";
@@ -29,7 +29,7 @@ export default async function RoundDetailPage({ params }: { params: Promise<{ ga
         <h1 className="page-title">{round.name}</h1>
         <RoundStatusBadge status={round.status} />
       </div>
-      <p className="text-gray-500 mb-4">Deadline {formatDateTime(round.deadlineAt)}</p>
+      <p className="text-slate-400 mb-4">Deadline {formatDateTime(round.deadlineAt)}</p>
 
       <div className="card mb-4">
         <p className="label">Round status</p>
@@ -44,7 +44,7 @@ export default async function RoundDetailPage({ params }: { params: Promise<{ ga
 
       <h2 className="section-title mt-6">Fixtures</h2>
       <div className="space-y-2">
-        {round.fixtures.length === 0 && <p className="text-gray-500">No fixtures added yet.</p>}
+        {round.fixtures.length === 0 && <p className="text-slate-400">No fixtures added yet.</p>}
         {round.fixtures.map((f) => (
           <FixtureAdminRow
             key={f.id}
@@ -52,7 +52,7 @@ export default async function RoundDetailPage({ params }: { params: Promise<{ ga
               id: f.id,
               homeTeamName: f.homeTeam.name,
               awayTeamName: f.awayTeam.name,
-              kickoff: f.kickoff.toISOString(),
+              kickoff: formatKickoff(f.kickoff),
               status: f.status,
               result: f.result,
             }}
@@ -62,7 +62,7 @@ export default async function RoundDetailPage({ params }: { params: Promise<{ ga
 
       <div className="card mt-6">
         <h2 className="section-title !mb-2">Process results</h2>
-        <p className="text-sm text-gray-600 mb-3">
+        <p className="text-sm text-slate-300 mb-3">
           Once every fixture's result has been recorded, process this round to apply the elimination rules and update the leaderboard.
         </p>
         <FormAction action={runProcessResults} hidden={{ roundId: round.id }} label="Process round results" confirmText="Process results now? This will eliminate participants whose team lost or drew, based on the game's rules." />

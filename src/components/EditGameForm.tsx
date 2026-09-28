@@ -54,7 +54,7 @@ export default function EditGameForm({ game, leagues, selectedLeagueIds }: { gam
       </div>
 
       <form onSubmit={onSubmit} className="card space-y-4">
-        {msg && <p className={msg.ok ? "text-pitch-700 text-sm" : "text-red-600 text-sm"}>{msg.text}</p>}
+        {msg && <p className={msg.ok ? "text-lime-300 text-sm" : "text-rose-400 text-sm"}>{msg.text}</p>}
         <div>
           <label className="label" htmlFor="name">Game name</label>
           <input className="input" id="name" name="name" defaultValue={game.name} required />

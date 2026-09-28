@@ -12,11 +12,11 @@ export default async function ExportPage({ params }: { params: Promise<{ gameId:
       <div className="grid sm:grid-cols-2 gap-4">
         <a href={`/api/admin/games/${gameId}/export/participants`} className="card hover:shadow-md block">
           <p className="font-semibold">Participants & payment status (CSV)</p>
-          <p className="text-sm text-gray-500 mt-1">Name, email, status, payment status, re-buys used.</p>
+          <p className="text-sm text-slate-400 mt-1">Name, email, status, payment status, re-buys used.</p>
         </a>
         <a href={`/api/admin/games/${gameId}/export/selections`} className="card hover:shadow-md block">
           <p className="font-semibold">Selections (CSV)</p>
-          <p className="text-sm text-gray-500 mt-1">Every round selection, team, outcome and whether it was automatic.</p>
+          <p className="text-sm text-slate-400 mt-1">Every round selection, team, outcome and whether it was automatic.</p>
         </a>
       </div>
     </div>

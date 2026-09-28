@@ -73,15 +73,15 @@ export default function SelectionForm({
       {error && <div role="alert" className="badge-warning block w-fit">{error}</div>}
 
       {pendingPick && (
-        <div className="card border-accent-400 bg-accent-50" role="dialog" aria-label="Confirm selection">
-          <p className="font-semibold text-gray-900">Confirm your selection</p>
-          <dl className="text-sm mt-2 space-y-1 text-gray-700">
+        <div className="card border-amber-400/40 bg-amber-400/10" role="dialog" aria-label="Confirm selection">
+          <p className="font-semibold text-white">Confirm your selection</p>
+          <dl className="text-sm mt-2 space-y-1 text-slate-200">
             <div><dt className="inline font-medium">Selected team: </dt><dd className="inline">{pendingPick.teamName}</dd></div>
             <div><dt className="inline font-medium">Opponent: </dt><dd className="inline">{pendingPick.opponent}</dd></div>
-            <div><dt className="inline font-medium">Kick-off: </dt><dd className="inline">{new Date(pendingPick.fixture.kickoff).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/London" })}</dd></div>
-            <div><dt className="inline font-medium">Deadline: </dt><dd className="inline">{new Date(deadline).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/London" })}</dd></div>
+            <div><dt className="inline font-medium">Kick-off: </dt><dd className="inline">{pendingPick.fixture.kickoff}</dd></div>
+            <div><dt className="inline font-medium">Deadline: </dt><dd className="inline">{deadline}</dd></div>
           </dl>
-          <p className="text-xs text-amber-700 mt-2">Once used, this team may not be available to you again for the rest of this game.</p>
+          <p className="text-xs text-amber-300 mt-2">Once used, this team may not be available to you again for the rest of this game.</p>
           <div className="flex gap-2 mt-3">
             <button className="btn-primary" onClick={confirm} disabled={pending}>{pending ? "Submitting…" : "Confirm selection"}</button>
             <button className="btn-ghost" onClick={() => setPendingPick(null)} disabled={pending}>Cancel</button>
@@ -93,8 +93,13 @@ export default function SelectionForm({
         {fixtures.map((f) => (
           <div key={f.fixtureId} className="card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <p className="text-xs text-gray-500">{f.leagueName} · {new Date(f.kickoff).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/London" })}</p>
-              <p className="font-medium">{f.homeTeamName} v {f.awayTeamName}</p>
+              <p className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                <LeagueTag name={f.leagueName} />
+                {f.kickoff}
+              </p>
+              <p className="mt-1.5 font-display text-lg font-semibold text-white">
+                {f.homeTeamName} <span className="mx-1 text-sm font-medium text-slate-500">vs</span> {f.awayTeamName}
+              </p>
             </div>
             <div className="flex gap-2">
               <TeamButton
@@ -119,12 +124,21 @@ export default function SelectionForm({
   );
 }
 
+function LeagueTag({ name }: { name: string }) {
+  const style = name.toLowerCase().includes("premier")
+    ? "bg-violet-500/20 text-violet-200 ring-violet-400/40"
+    : name.toLowerCase().includes("championship")
+    ? "bg-cyan-400/15 text-cyan-200 ring-cyan-400/40"
+    : "bg-white/10 text-slate-200 ring-white/20";
+  return <span className={`rounded-md px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wide ring-1 ring-inset ${style}`}>{name}</span>;
+}
+
 function TeamButton({
   label, selected, eligible, disabled, onClick,
 }: { label: string; selected: boolean; eligible: boolean; disabled: boolean; onClick: () => void }) {
   if (!eligible) {
     return (
-      <button disabled className="btn-ghost !text-gray-400 !bg-gray-50 border border-gray-200 cursor-not-allowed" title="Already used — not eligible again" aria-label={`${label}, not eligible, already used`}>
+      <button disabled className="btn-ghost !text-slate-500 !bg-white/5 border border-white/10 cursor-not-allowed" title="Already used — not eligible again" aria-label={`${label}, not eligible, already used`}>
         {label} <span aria-hidden>🔒</span>
       </button>
     );

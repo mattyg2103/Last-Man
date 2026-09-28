@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { ukTimeToDate } from "../src/lib/ukTime";
 
 const prisma = new PrismaClient();
 
@@ -22,19 +23,22 @@ function shortName(name: string) {
   return name.split(" ").slice(0, 2).join(" ").slice(0, 12);
 }
 
-function nextFriday3pm(fromWeeksAhead = 0): Date {
+// Calendar date (UTC-based arithmetic) of the next Friday, plus `daysAfter`.
+function nextFridayPlus(fromWeeksAhead: number, daysAfter = 0) {
   const d = new Date();
-  const day = d.getDay();
-  const diff = (5 - day + 7) % 7 || 7; // next Friday (day 5)
-  d.setDate(d.getDate() + diff + fromWeeksAhead * 7);
-  d.setHours(15, 0, 0, 0);
-  return d;
+  const diff = (5 - d.getUTCDay() + 7) % 7 || 7;
+  d.setUTCDate(d.getUTCDate() + diff + fromWeeksAhead * 7 + daysAfter);
+  return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, day: d.getUTCDate() };
 }
 
-function kickoffOn(date: Date, hour: number, minute = 0): Date {
-  const d = new Date(date);
-  d.setHours(hour, minute, 0, 0);
-  return d;
+function nextFriday3pm(fromWeeksAhead = 0): Date {
+  const { y, m, day } = nextFridayPlus(fromWeeksAhead);
+  return ukTimeToDate(y, m, day, 15, 0);
+}
+
+function saturdayKickoff(fromWeeksAhead: number, hour: number, minute = 0): Date {
+  const { y, m, day } = nextFridayPlus(fromWeeksAhead, 1);
+  return ukTimeToDate(y, m, day, hour, minute);
 }
 
 async function main() {
@@ -187,7 +191,7 @@ async function main() {
           leagueId: premierLeague.id,
           homeTeamId: plTeams[h].id,
           awayTeamId: plTeams[a].id,
-          kickoff: kickoffOn(round1Deadline, 15, 0),
+          kickoff: saturdayKickoff(0, 15, 0),
           status: "SCHEDULED",
         },
       });
@@ -199,7 +203,7 @@ async function main() {
           leagueId: championship.id,
           homeTeamId: champTeams[h].id,
           awayTeamId: champTeams[a].id,
-          kickoff: kickoffOn(round1Deadline, 12, 30),
+          kickoff: saturdayKickoff(0, 12, 30),
           status: "SCHEDULED",
         },
       });

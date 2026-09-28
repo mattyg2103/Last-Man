@@ -34,7 +34,7 @@ export default function ContactForm({ games }: { games: { id: string; name: stri
         <label className="label" htmlFor="message">Message</label>
         <textarea className="input" id="message" name="message" rows={4} required />
       </div>
-      {msg && <p className={msg.ok ? "text-pitch-700 text-sm" : "text-red-600 text-sm"}>{msg.text}</p>}
+      {msg && <p className={msg.ok ? "text-lime-300 text-sm" : "text-rose-400 text-sm"}>{msg.text}</p>}
       <button className="btn-primary" type="submit" disabled={pending}>Send message</button>
     </form>
   );

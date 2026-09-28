@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { formatMoney } from "@/lib/format";
+import { formatMoney, formatDateTime } from "@/lib/format";
 import { GameStatusBadge } from "@/components/StatusBadge";
 
 export default async function AdminDashboardPage() {
@@ -23,10 +23,10 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid sm:grid-cols-4 gap-4">
-        <div className="card"><p className="text-sm text-gray-500">Games</p><p className="text-3xl font-bold">{games.length}</p></div>
-        <div className="card"><p className="text-sm text-gray-500">Total participants</p><p className="text-3xl font-bold">{totalParticipants}</p></div>
-        <div className="card"><p className="text-sm text-gray-500">Payments not confirmed</p><p className="text-3xl font-bold text-accent-600">{unpaid}</p></div>
-        <div className="card"><p className="text-sm text-gray-500">Rounds open now</p><p className="text-3xl font-bold">{openRounds.length}</p></div>
+        <div className="card"><p className="text-sm text-slate-400">Games</p><p className="stat-number">{games.length}</p></div>
+        <div className="card"><p className="text-sm text-slate-400">Total participants</p><p className="stat-number">{totalParticipants}</p></div>
+        <div className="card"><p className="text-sm text-slate-400">Payments not confirmed</p><p className="stat-number stat-number-warn">{unpaid}</p></div>
+        <div className="card"><p className="text-sm text-slate-400">Rounds open now</p><p className="stat-number">{openRounds.length}</p></div>
       </div>
 
       <div>
@@ -38,7 +38,7 @@ export default async function AdminDashboardPage() {
                 <p className="font-semibold">{g.name}</p>
                 <GameStatusBadge status={g.status} />
               </div>
-              <p className="text-sm text-gray-500 mt-1">{g.entries.length} participant(s) · {formatMoney(g.entryFeePence)} entry</p>
+              <p className="text-sm text-slate-400 mt-1">{g.entries.length} participant(s) · {formatMoney(g.entryFeePence)} entry</p>
             </Link>
           ))}
         </div>
@@ -46,14 +46,14 @@ export default async function AdminDashboardPage() {
 
       <div>
         <h2 className="section-title">Recent administrator activity</h2>
-        <div className="card p-0 divide-y divide-gray-100">
+        <div className="card p-0 divide-y divide-white/5">
           {recentAudit.map((a) => (
             <div key={a.id} className="px-4 py-2 text-sm flex justify-between">
               <span>{a.actor.name} — {a.action.replaceAll("_", " ").toLowerCase()}</span>
-              <span className="text-gray-400">{a.createdAt.toLocaleString("en-GB")}</span>
+              <span className="text-slate-500">{formatDateTime(a.createdAt)}</span>
             </div>
           ))}
-          <Link href="/admin/audit" className="block px-4 py-2 text-sm text-pitch-700 underline">View full audit history</Link>
+          <Link href="/admin/audit" className="block px-4 py-2 text-sm text-lime-300 underline">View full audit history</Link>
         </div>
       </div>
     </div>

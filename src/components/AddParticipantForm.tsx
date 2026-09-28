@@ -27,10 +27,10 @@ export default function AddParticipantForm({ gameId }: { gameId: string }) {
       <div className="flex-1 min-w-[220px]">
         <label className="label" htmlFor="email">Add participant by email</label>
         <input className="input" id="email" name="email" type="email" required placeholder="participant@example.com" />
-        <p className="text-xs text-gray-500 mt-1">They must already have an account on the website.</p>
+        <p className="text-xs text-slate-400 mt-1">They must already have an account on the website.</p>
       </div>
       <button className="btn-primary" type="submit" disabled={pending}>{pending ? "Adding…" : "Add participant"}</button>
-      {msg && <p className={`w-full text-sm ${msg.ok ? "text-pitch-700" : "text-red-600"}`}>{msg.text}</p>}
+      {msg && <p className={`w-full text-sm ${msg.ok ? "text-lime-300" : "text-rose-400"}`}>{msg.text}</p>}
     </form>
   );
 }

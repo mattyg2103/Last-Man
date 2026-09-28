@@ -33,7 +33,7 @@ export default function AnnouncementForm({ gameId }: { gameId: string }) {
         <label className="label" htmlFor="body">Message</label>
         <textarea className="input" id="body" name="body" rows={3} required />
       </div>
-      {msg && <p className="text-sm text-pitch-700">{msg}</p>}
+      {msg && <p className="text-sm text-lime-300">{msg}</p>}
       <button className="btn-primary" type="submit" disabled={pending}>Publish to all participants</button>
     </form>
   );

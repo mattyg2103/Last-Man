@@ -24,16 +24,16 @@ export default async function SelectionMonitoringPage({ params }: { params: Prom
       <AdminGameSubNav gameId={gameId} />
       <h1 className="page-title mb-4">Selection monitoring</h1>
       {!round ? (
-        <p className="text-gray-500">There is no open or recently closed round.</p>
+        <p className="text-slate-400">There is no open or recently closed round.</p>
       ) : (
         <>
-          <p className="text-gray-600 mb-4">Showing selections for <strong>{round.name}</strong>.</p>
+          <p className="text-slate-300 mb-4">Showing selections for <strong>{round.name}</strong>.</p>
           <div className="overflow-x-auto card p-0">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-left text-gray-500">
+              <thead className="bg-white/5 text-left text-slate-400">
                 <tr><th className="px-4 py-2">Participant</th><th className="px-4 py-2">Status</th><th className="px-4 py-2">Selection</th><th className="px-4 py-2">Correct</th></tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-white/5">
                 {entries.map((e) => {
                   const sel = e.selections[0];
                   return (

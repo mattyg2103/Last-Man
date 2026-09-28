@@ -32,7 +32,7 @@ export default function LeaderboardSettingsForm({
         <input type="checkbox" name="showEliminatedOnLeaderboard" defaultChecked={showEliminatedOnLeaderboard} />
         Keep eliminated participants visible on the leaderboard
       </label>
-      {msg && <p className="text-sm text-pitch-700">{msg}</p>}
+      {msg && <p className="text-sm text-lime-300">{msg}</p>}
       <button className="btn-primary" type="submit" disabled={pending}>Save</button>
     </form>
   );

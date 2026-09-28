@@ -31,7 +31,7 @@ export default async function MissedSelectionsPage({ params }: { params: Promise
     <div>
       <AdminGameSubNav gameId={gameId} />
       <h1 className="page-title mb-1">Missed selections</h1>
-      <p className="text-gray-600 mb-4">
+      <p className="text-slate-300 mb-4">
         {rules.missedDeadlineAction === "NONE"
           ? "This game is set to require you to choose a team manually for anyone who misses the deadline — pick their team below."
           : rules.missedDeadlineAction === "AUTO_ASSIGN"
@@ -43,13 +43,13 @@ export default async function MissedSelectionsPage({ params }: { params: Promise
           <div key={round.id} className="card">
             <div className="flex items-center justify-between mb-2">
               <h2 className="font-semibold">{round.name}</h2>
-              <span className="text-sm text-gray-500">Deadline {formatDateTime(round.deadlineAt)}</span>
+              <span className="text-sm text-slate-400">Deadline {formatDateTime(round.deadlineAt)}</span>
             </div>
             {missing.length === 0 ? (
-              <p className="text-sm text-pitch-700">Everyone has submitted a selection.</p>
+              <p className="text-sm text-lime-300">Everyone has submitted a selection.</p>
             ) : (
               <>
-                <div className="divide-y divide-gray-100 mb-3">
+                <div className="divide-y divide-white/5 mb-3">
                   {missing.map((e) => (
                     <div key={e.id} className="py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <span className="text-sm font-medium">{e.user.name}</span>
@@ -73,7 +73,7 @@ export default async function MissedSelectionsPage({ params }: { params: Promise
             )}
           </div>
         ))}
-        {rows.length === 0 && <p className="text-gray-500">There are no open or recently closed rounds.</p>}
+        {rows.length === 0 && <p className="text-slate-400">There are no open or recently closed rounds.</p>}
       </div>
     </div>
   );

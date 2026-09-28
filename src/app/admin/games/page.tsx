@@ -16,7 +16,7 @@ export default async function AdminGamesPage() {
       </div>
       <div className="overflow-x-auto card p-0">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-500">
+          <thead className="bg-white/5 text-left text-slate-400">
             <tr>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Status</th>
@@ -26,7 +26,7 @@ export default async function AdminGamesPage() {
               <th className="px-4 py-2"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-white/5">
             {games.map((g) => (
               <tr key={g.id}>
                 <td className="px-4 py-2 font-medium">{g.name}</td>
@@ -34,7 +34,7 @@ export default async function AdminGamesPage() {
                 <td className="px-4 py-2">{formatMoney(g.entryFeePence)}</td>
                 <td className="px-4 py-2">{formatDate(g.startDate)}</td>
                 <td className="px-4 py-2">{g.entries.length}</td>
-                <td className="px-4 py-2"><Link href={`/admin/games/${g.id}`} className="text-pitch-700 underline">Manage</Link></td>
+                <td className="px-4 py-2"><Link href={`/admin/games/${g.id}`} className="text-lime-300 underline">Manage</Link></td>
               </tr>
             ))}
           </tbody>

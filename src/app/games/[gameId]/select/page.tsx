@@ -2,7 +2,7 @@ import { requireCustomer } from "@/lib/session";
 import { requireEntry } from "@/lib/gameAccess";
 import { prisma } from "@/lib/prisma";
 import { getRoundFixturesForEntry } from "@/lib/engine";
-import { formatDateTime } from "@/lib/format";
+import { formatDateTime, formatKickoff } from "@/lib/format";
 import GameSubNav from "@/components/GameSubNav";
 import SelectionForm from "@/components/SelectionForm";
 
@@ -30,10 +30,10 @@ export default async function SelectRoundPage({ params }: { params: Promise<{ ga
       )}
 
       {!round ? (
-        <p className="text-gray-500">There is no round currently open for selections.</p>
+        <p className="text-slate-400">There is no round currently open for selections.</p>
       ) : entry.status !== "ACTIVE" ? null : (
         <>
-          <p className="text-gray-600 mb-4">
+          <p className="text-slate-300 mb-4">
             {round.name} — deadline <span className="font-semibold">{formatDateTime(round.deadlineAt)}</span>. Pick one eligible team to win its fixture.
           </p>
           <SelectRoundContent entryId={entry.id} roundId={round.id} deadline={round.deadlineAt.toISOString()} canChange={rules.allowChangeBeforeDeadline} />
@@ -55,8 +55,8 @@ async function SelectRoundContent({
     <SelectionForm
       entryId={entryId}
       roundId={roundId}
-      fixtures={fixtures.map((f) => ({ ...f, kickoff: f.kickoff.toISOString() }))}
-      deadline={deadline}
+      fixtures={fixtures.map((f) => ({ ...f, kickoff: formatKickoff(f.kickoff) }))}
+      deadline={formatDateTime(deadline)}
       currentTeamId={mySelection?.teamId ?? null}
       canChange={canChange}
     />

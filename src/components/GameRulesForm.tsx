@@ -51,7 +51,7 @@ export default function GameRulesForm({ gameId, rules }: { gameId: string; rules
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-      {msg && <p className="text-sm text-pitch-700">{msg}</p>}
+      {msg && <p className="text-sm text-lime-300">{msg}</p>}
 
       <fieldset className="card space-y-3">
         <legend className="section-title !mb-1">Selections</legend>
@@ -128,7 +128,7 @@ export default function GameRulesForm({ gameId, rules }: { gameId: string; rules
             <option value="AUTO_ASSIGN">Automatically assign the lowest-ranked eligible team</option>
             <option value="ELIMINATE">Eliminate the participant automatically</option>
           </select>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-slate-400 mt-1">
             With &ldquo;Administrator chooses&rdquo;, participants who miss the deadline appear on the Missed selections page,
             where you pick their team directly — nothing is assigned automatically.
           </p>

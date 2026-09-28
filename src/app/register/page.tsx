@@ -11,8 +11,8 @@ export default async function RegisterPage() {
     <div className="max-w-sm mx-auto card mt-10">
       <h1 className="section-title">Create your account</h1>
       <RegisterForm />
-      <p className="text-sm text-gray-500 mt-4">
-        Already have an account? <Link href="/login" className="text-pitch-700 font-semibold underline">Log in</Link>
+      <p className="text-sm text-slate-400 mt-4">
+        Already have an account? <Link href="/login" className="text-lime-300 font-semibold underline">Log in</Link>
       </p>
     </div>
   );

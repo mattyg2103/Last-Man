@@ -29,7 +29,7 @@ export default function AdminSelectionCorrector({
         {teams.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
       </select>
       <button className="btn-secondary !py-1 text-xs" type="submit" disabled={pending}>Set selection</button>
-      {msg && <span className="text-xs text-gray-500">{msg}</span>}
+      {msg && <span className="text-xs text-slate-400">{msg}</span>}
     </form>
   );
 }

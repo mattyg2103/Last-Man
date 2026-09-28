@@ -44,7 +44,7 @@ export default function RegisterForm() {
       <div>
         <label className="label" htmlFor="name">Full name</label>
         <input className="input" id="name" name="name" type="text" required autoComplete="name" />
-        <p className="text-xs text-gray-500 mt-1">Use your full name — administrators use this to match payment references.</p>
+        <p className="text-xs text-slate-400 mt-1">Use your full name — administrators use this to match payment references.</p>
       </div>
       <div>
         <label className="label" htmlFor="email">Email address</label>
@@ -53,7 +53,7 @@ export default function RegisterForm() {
       <div>
         <label className="label" htmlFor="password">Password</label>
         <input className="input" id="password" name="password" type="password" required minLength={8} autoComplete="new-password" />
-        <p className="text-xs text-gray-500 mt-1">At least 8 characters.</p>
+        <p className="text-xs text-slate-400 mt-1">At least 8 characters.</p>
       </div>
       <button className="btn-primary w-full" type="submit" disabled={loading}>
         {loading ? "Creating account…" : "Create account"}

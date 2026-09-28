@@ -45,7 +45,7 @@ export default function CreateRoundForm({ gameId, nextOrder }: { gameId: string;
         <input className="input" id="deadlineAt" name="deadlineAt" type="datetime-local" required />
       </div>
       <button className="btn-primary col-span-full sm:col-span-1" type="submit" disabled={pending}>Create round</button>
-      {msg && <span className="text-sm text-gray-600 col-span-full">{msg}</span>}
+      {msg && <span className="text-sm text-slate-300 col-span-full">{msg}</span>}
     </form>
   );
 }

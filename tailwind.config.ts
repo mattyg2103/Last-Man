@@ -5,29 +5,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        pitch: {
-          50: "#eafaf0",
-          100: "#c8f0d8",
-          200: "#96e0b3",
-          300: "#5fcb8a",
-          400: "#33b268",
-          500: "#189650",
-          600: "#0e7a40",
-          700: "#0b5f33",
-          800: "#0a4a29",
-          900: "#083d23",
-          950: "#042013",
-        },
-        accent: {
-          50: "#fff7ed",
-          100: "#ffedd5",
-          400: "#fb923c",
-          500: "#f97316",
-          600: "#ea580c",
+        ink: {
+          950: "#05080f",
+          900: "#070b17",
+          800: "#0d1426",
+          700: "#141d35",
         },
       },
       fontFamily: {
-        sans: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+        display: ["Space Grotesk", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },

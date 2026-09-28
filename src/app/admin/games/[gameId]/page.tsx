@@ -15,7 +15,7 @@ export default async function AdminGameDetailPage({ params }: { params: Promise<
       <AdminGameSubNav gameId={game.id} />
       <div className="flex items-center justify-between mb-4">
         <h1 className="page-title">{game.name}</h1>
-        <p className="text-gray-500 text-sm">{game.entries.length} participant(s) · {formatMoney(game.entryFeePence)}</p>
+        <p className="text-slate-400 text-sm">{game.entries.length} participant(s) · {formatMoney(game.entryFeePence)}</p>
       </div>
       <EditGameForm
         game={{ ...game, startDate: game.startDate.toISOString() }}

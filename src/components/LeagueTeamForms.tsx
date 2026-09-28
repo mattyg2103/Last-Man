@@ -34,7 +34,7 @@ export function CreateLeagueForm() {
         <input className="input" id="code" name="code" required placeholder="e.g. L1" maxLength={10} />
       </div>
       <button className="btn-primary" type="submit" disabled={pending}>Add league</button>
-      {msg && <span className="text-sm text-gray-600">{msg}</span>}
+      {msg && <span className="text-sm text-slate-300">{msg}</span>}
     </form>
   );
 }

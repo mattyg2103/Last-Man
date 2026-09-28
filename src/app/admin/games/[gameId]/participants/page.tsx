@@ -26,7 +26,7 @@ export default async function ParticipantsPage({ params }: { params: Promise<{ g
 
       <div className="overflow-x-auto card p-0 mt-4">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-500">
+          <thead className="bg-white/5 text-left text-slate-400">
             <tr>
               <th className="px-4 py-2">Participant</th>
               <th className="px-4 py-2">Status</th>
@@ -35,12 +35,12 @@ export default async function ParticipantsPage({ params }: { params: Promise<{ g
               <th className="px-4 py-2"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-white/5">
             {entries.map((e) => (
               <tr key={e.id}>
                 <td className="px-4 py-2">
                   <p className="font-medium">{e.user.name}</p>
-                  <p className="text-xs text-gray-500">{e.user.email}</p>
+                  <p className="text-xs text-slate-400">{e.user.email}</p>
                 </td>
                 <td className="px-4 py-2">
                   <EntryStatusSelect entryId={e.id} currentStatus={e.status} />

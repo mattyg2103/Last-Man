@@ -19,13 +19,13 @@ export default async function NotificationsPage() {
         <FormAction action={markAllNotificationsRead} hidden={{}} label="Mark all as read" className="btn-secondary" />
       </div>
       {notifications.length === 0 ? (
-        <p className="text-gray-500">You have no notifications yet.</p>
+        <p className="text-slate-400">You have no notifications yet.</p>
       ) : (
         <ul className="space-y-2">
           {notifications.map((n) => (
-            <li key={n.id} className={`card flex items-start justify-between gap-3 ${!n.readAt ? "border-pitch-400" : ""}`}>
+            <li key={n.id} className={`card flex items-start justify-between gap-3 ${!n.readAt ? "border-lime-400/60" : ""}`}>
               <div>
-                <p className="text-xs text-gray-500">{n.type.replaceAll("_", " ")} · {formatDateTime(n.createdAt)}</p>
+                <p className="text-xs text-slate-400">{n.type.replaceAll("_", " ")} · {formatDateTime(n.createdAt)}</p>
                 <p className="text-sm mt-1">{n.message}</p>
               </div>
               {!n.readAt && (

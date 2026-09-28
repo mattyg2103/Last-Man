@@ -52,7 +52,7 @@ export default function FixtureForm({ roundId, leagues }: { roundId: string; lea
         <input className="input" id="kickoff" name="kickoff" type="datetime-local" required />
       </div>
       <button className="btn-primary" type="submit" disabled={pending || teams.length < 2}>Add fixture</button>
-      {msg && <span className="text-sm text-gray-600 col-span-full">{msg}</span>}
+      {msg && <span className="text-sm text-slate-300 col-span-full">{msg}</span>}
     </form>
   );
 }

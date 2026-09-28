@@ -24,11 +24,11 @@ export default async function AnnouncementsPage({ params }: { params: Promise<{ 
       {openRounds.length > 0 && (
         <div className="card">
           <h2 className="section-title !mb-2">Deadline reminders</h2>
-          <p className="text-sm text-gray-600 mb-3">Send a reminder now to everyone who hasn&apos;t yet submitted a selection for an open round.</p>
+          <p className="text-sm text-slate-300 mb-3">Send a reminder now to everyone who hasn&apos;t yet submitted a selection for an open round.</p>
           <div className="flex flex-wrap gap-2">
             {openRounds.map((r) => (
               <div key={r.id} className="flex gap-2 items-center">
-                <span className="text-sm text-gray-500">{r.name}:</span>
+                <span className="text-sm text-slate-400">{r.name}:</span>
                 <FormAction action={sendDeadlineReminder} hidden={{ roundId: r.id, final: "false" }} label="Send reminder" className="btn-secondary" />
                 <FormAction action={sendDeadlineReminder} hidden={{ roundId: r.id, final: "true" }} label="Send final reminder" className="btn-secondary" />
               </div>
@@ -40,14 +40,14 @@ export default async function AnnouncementsPage({ params }: { params: Promise<{ 
       <div>
         <h2 className="section-title">Published announcements</h2>
         {announcements.length === 0 ? (
-          <p className="text-gray-500">No announcements published yet.</p>
+          <p className="text-slate-400">No announcements published yet.</p>
         ) : (
           <div className="space-y-2">
             {announcements.map((a) => (
               <div key={a.id} className="card">
                 <p className="font-semibold">{a.title}</p>
-                <p className="text-sm text-gray-600">{a.body}</p>
-                <p className="text-xs text-gray-400 mt-1">{formatDateTime(a.createdAt)}</p>
+                <p className="text-sm text-slate-300">{a.body}</p>
+                <p className="text-xs text-slate-500 mt-1">{formatDateTime(a.createdAt)}</p>
               </div>
             ))}
           </div>

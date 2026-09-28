@@ -34,10 +34,10 @@ export default async function GameRulesPage({ params }: { params: Promise<{ game
       <GameSubNav gameId={gameId} />
       <h1 className="page-title mb-4">Game rules</h1>
       <div className="card mb-6">
-        <dl className="divide-y divide-gray-100">
+        <dl className="divide-y divide-white/5">
           {items.map(([k, v]) => (
             <div key={k} className="py-2 grid grid-cols-1 sm:grid-cols-2 gap-1 text-sm">
-              <dt className="text-gray-500">{k}</dt>
+              <dt className="text-slate-400">{k}</dt>
               <dd className="font-medium">{v}</dd>
             </div>
           ))}
@@ -46,7 +46,7 @@ export default async function GameRulesPage({ params }: { params: Promise<{ game
       {rules.freeTextRules && (
         <div className="card">
           <h2 className="section-title">Additional rules from the administrator</h2>
-          <p className="text-sm text-gray-700 whitespace-pre-wrap">{rules.freeTextRules}</p>
+          <p className="text-sm text-slate-200 whitespace-pre-wrap">{rules.freeTextRules}</p>
         </div>
       )}
     </div>

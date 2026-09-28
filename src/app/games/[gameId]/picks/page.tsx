@@ -28,11 +28,11 @@ export default async function MyPicksPage({ params }: { params: Promise<{ gameId
       <GameSubNav gameId={gameId} />
       <h1 className="page-title mb-4">My previous picks</h1>
       {selections.length === 0 ? (
-        <p className="text-gray-500">You haven&apos;t made any selections yet.</p>
+        <p className="text-slate-400">You haven&apos;t made any selections yet.</p>
       ) : (
         <div className="overflow-x-auto card p-0">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-left text-gray-500">
+            <thead className="bg-white/5 text-left text-slate-400">
               <tr>
                 <th className="px-4 py-2">Round</th>
                 <th className="px-4 py-2">Team</th>
@@ -41,7 +41,7 @@ export default async function MyPicksPage({ params }: { params: Promise<{ gameId
                 <th className="px-4 py-2">Outcome</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-white/5">
               {selections.map((s) => (
                 <tr key={s.id}>
                   <td className="px-4 py-2 font-medium">{s.round.name}</td>

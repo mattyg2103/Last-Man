@@ -32,13 +32,13 @@ export default function AccountForms({ name, email }: { name: string; email: str
         <h2 className="section-title !mb-0">Your details</h2>
         <div>
           <label className="label" htmlFor="email">Email address</label>
-          <input className="input bg-gray-50" id="email" value={email} disabled />
+          <input className="input bg-white/5" id="email" value={email} disabled />
         </div>
         <div>
           <label className="label" htmlFor="name">Full name</label>
           <input className="input" id="name" name="name" defaultValue={name} required />
         </div>
-        {nameMsg && <p className={nameMsg.ok ? "text-pitch-700 text-sm" : "text-red-600 text-sm"}>{nameMsg.text}</p>}
+        {nameMsg && <p className={nameMsg.ok ? "text-lime-300 text-sm" : "text-rose-400 text-sm"}>{nameMsg.text}</p>}
         <button className="btn-primary" type="submit" disabled={pending}>Save details</button>
       </form>
 
@@ -52,7 +52,7 @@ export default function AccountForms({ name, email }: { name: string; email: str
           <label className="label" htmlFor="newPassword">New password</label>
           <input className="input" id="newPassword" name="newPassword" type="password" required minLength={8} autoComplete="new-password" />
         </div>
-        {pwMsg && <p className={pwMsg.ok ? "text-pitch-700 text-sm" : "text-red-600 text-sm"}>{pwMsg.text}</p>}
+        {pwMsg && <p className={pwMsg.ok ? "text-lime-300 text-sm" : "text-rose-400 text-sm"}>{pwMsg.text}</p>}
         <button className="btn-primary" type="submit" disabled={pending}>Change password</button>
       </form>
     </div>

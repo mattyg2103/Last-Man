@@ -22,10 +22,10 @@ export default async function RoundsPage({ params }: { params: Promise<{ gameId:
         {rounds.map((r) => (
           <Link key={r.id} href={`/admin/games/${gameId}/rounds/${r.id}`} className="card hover:shadow-md block">
             <div className="flex items-center justify-between">
-              <p className="font-semibold">{r.name} <span className="text-xs text-gray-400">GW{r.gameWeek}</span></p>
+              <p className="font-semibold">{r.name} <span className="text-xs text-slate-500">GW{r.gameWeek}</span></p>
               <RoundStatusBadge status={r.status} />
             </div>
-            <p className="text-sm text-gray-500 mt-1">Deadline {formatDateTime(r.deadlineAt)} · {r.fixtures.length} fixture(s)</p>
+            <p className="text-sm text-slate-400 mt-1">Deadline {formatDateTime(r.deadlineAt)} · {r.fixtures.length} fixture(s)</p>
           </Link>
         ))}
       </div>

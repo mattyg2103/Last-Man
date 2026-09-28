@@ -13,13 +13,16 @@ export default function GameSubNav({ gameId }: { gameId: string }) {
     { href: `/games/${gameId}/rules`, label: "Rules" },
   ];
   return (
-    <div className="flex gap-1 overflow-x-auto border-b border-gray-200 mb-5 -mx-1 px-1">
+    <div className="mb-6 flex gap-1 overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.04] p-1 backdrop-blur-xl">
       {tabs.map((t) => (
         <Link
           key={t.href}
           href={t.href}
-          className={`px-3 py-2 text-sm font-medium whitespace-nowrap border-b-2 ${
-            pathname === t.href ? "border-pitch-600 text-pitch-700" : "border-transparent text-gray-500 hover:text-gray-800"
+          aria-current={pathname === t.href ? "page" : undefined}
+          className={`whitespace-nowrap rounded-xl px-3.5 py-2 text-sm font-semibold transition ${
+            pathname === t.href
+              ? "bg-lime-400 text-slate-950 shadow-[0_0_20px_-6px_rgba(163,230,53,0.8)]"
+              : "text-slate-300 hover:bg-white/10 hover:text-white"
           }`}
         >
           {t.label}

@@ -22,7 +22,7 @@ export default async function MyGamesPage() {
       <div>
         <h1 className="page-title mb-4">My games</h1>
         {entries.length === 0 ? (
-          <p className="text-gray-500">You haven&apos;t joined any games yet.</p>
+          <p className="text-slate-400">You haven&apos;t joined any games yet.</p>
         ) : (
           <div className="grid md:grid-cols-2 gap-4">
             {entries.map((entry) => (
@@ -30,7 +30,7 @@ export default async function MyGamesPage() {
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-semibold">{entry.game.name}</p>
-                    <p className="text-sm text-gray-500">{formatMoney(entry.game.entryFeePence)} · Started {formatDate(entry.game.startDate)}</p>
+                    <p className="text-sm text-slate-400">{formatMoney(entry.game.entryFeePence)} · Started {formatDate(entry.game.startDate)}</p>
                   </div>
                   <EntryStatusBadge status={entry.status} />
                 </div>
@@ -44,14 +44,14 @@ export default async function MyGamesPage() {
       <div>
         <h2 className="section-title">Available games to join</h2>
         {availableToJoin.length === 0 ? (
-          <p className="text-gray-500">There are no games currently open for new entries.</p>
+          <p className="text-slate-400">There are no games currently open for new entries.</p>
         ) : (
           <div className="grid md:grid-cols-2 gap-4">
             {availableToJoin.map((game) => (
               <div key={game.id} className="card">
                 <p className="font-semibold">{game.name}</p>
-                <p className="text-sm text-gray-600 mt-1">{game.description}</p>
-                <p className="text-sm text-gray-500 mt-2">Entry fee: {formatMoney(game.entryFeePence)} · Starts {formatDate(game.startDate)}</p>
+                <p className="text-sm text-slate-300 mt-1">{game.description}</p>
+                <p className="text-sm text-slate-400 mt-2">Entry fee: {formatMoney(game.entryFeePence)} · Starts {formatDate(game.startDate)}</p>
                 <div className="mt-3">
                   <FormAction action={joinGame} hidden={{ gameId: game.id }} label="Join this game" />
                 </div>

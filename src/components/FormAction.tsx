@@ -48,7 +48,7 @@ export default function FormAction({
         </button>
       </form>
       {feedback && (
-        <p role="status" className={`text-sm mt-1 ${feedback.ok ? "text-pitch-700" : "text-red-600"}`}>
+        <p role="status" className={`text-sm mt-1 ${feedback.ok ? "text-lime-300" : "text-rose-400"}`}>
           {feedback.ok ? feedback.message : feedback.error}
         </p>
       )}

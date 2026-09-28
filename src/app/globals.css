@@ -3,50 +3,102 @@
 @tailwind utilities;
 
 :root {
-  --pitch: #189650;
+  color-scheme: dark;
+}
+
+html {
+  background-color: #070b17;
 }
 
 body {
-  background-color: #f6f8f7;
-  color: #10241a;
+  @apply text-slate-100 antialiased font-sans;
+  background-color: #070b17;
+  background-image:
+    radial-gradient(60rem 40rem at -10% -15%, rgba(139, 92, 246, 0.28), transparent 60%),
+    radial-gradient(50rem 32rem at 110% -5%, rgba(34, 211, 238, 0.16), transparent 60%),
+    radial-gradient(70rem 40rem at 50% 115%, rgba(163, 230, 53, 0.13), transparent 60%);
+  background-attachment: fixed;
 }
 
-.card {
-  @apply bg-white rounded-xl border border-gray-200 shadow-sm p-5;
+h1, h2, h3 {
+  @apply font-display tracking-tight;
 }
 
-.btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-semibold text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-}
-.btn-primary {
-  @apply btn bg-pitch-600 text-white hover:bg-pitch-700 focus-visible:ring-pitch-600;
-}
-.btn-secondary {
-  @apply btn bg-white text-pitch-700 border border-pitch-300 hover:bg-pitch-50 focus-visible:ring-pitch-600;
-}
-.btn-danger {
-  @apply btn bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-600;
-}
-.btn-ghost {
-  @apply btn bg-transparent text-gray-700 hover:bg-gray-100;
+::selection {
+  background: rgba(163, 230, 53, 0.35);
 }
 
-.input {
-  @apply w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pitch-500 focus:border-pitch-500;
-}
-.label {
-  @apply block text-sm font-medium text-gray-700 mb-1;
+select option {
+  background-color: #0d1426;
+  color: #e2e8f0;
 }
 
-.badge {
-  @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold border;
+/* Tables: quieter, uppercase column headings */
+thead th {
+  @apply text-[0.7rem] font-semibold uppercase tracking-wider;
 }
-.badge-active { @apply badge bg-pitch-50 text-pitch-800 border-pitch-300; }
-.badge-eliminated { @apply badge bg-gray-100 text-gray-600 border-gray-300; }
-.badge-rebuy { @apply badge bg-accent-50 text-accent-600 border-accent-400; }
-.badge-winner { @apply badge bg-yellow-50 text-yellow-800 border-yellow-400; }
-.badge-warning { @apply badge bg-red-50 text-red-700 border-red-300; }
-.badge-neutral { @apply badge bg-blue-50 text-blue-700 border-blue-300; }
+tbody tr {
+  @apply transition-colors;
+}
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
 
-.page-title { @apply text-2xl font-bold text-gray-900; }
-.section-title { @apply text-lg font-semibold text-gray-900 mb-3; }
+@layer components {
+  .card {
+    @apply rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)] transition;
+  }
+  a.card:hover {
+    @apply -translate-y-0.5 border-lime-300/40 bg-white/[0.07] shadow-[0_12px_40px_-12px_rgba(163,230,53,0.45)];
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-lime-400 text-slate-950 shadow-[0_0_24px_-6px_rgba(163,230,53,0.7)] hover:bg-lime-300 focus-visible:ring-lime-300;
+  }
+  .btn-secondary {
+    @apply btn border border-white/15 bg-white/5 text-slate-100 hover:border-lime-300/50 hover:bg-white/10 focus-visible:ring-lime-300;
+  }
+  .btn-danger {
+    @apply btn bg-rose-500 text-white hover:bg-rose-400 focus-visible:ring-rose-400;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-slate-300 hover:bg-white/10 hover:text-white;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 transition focus:border-lime-400/70 focus:outline-none focus:ring-2 focus:ring-lime-400/40 disabled:opacity-60;
+  }
+  .label {
+    @apply mb-1 block text-sm font-medium text-slate-300;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset;
+  }
+  .badge-active { @apply badge bg-lime-400/15 text-lime-300 ring-lime-400/30; }
+  .badge-eliminated { @apply badge bg-slate-500/15 text-slate-300 ring-slate-400/25; }
+  .badge-rebuy { @apply badge bg-amber-400/15 text-amber-300 ring-amber-400/30; }
+  .badge-winner { @apply badge bg-gradient-to-r from-yellow-300/25 to-amber-500/25 text-yellow-200 ring-yellow-300/40; }
+  .badge-warning { @apply badge bg-rose-500/15 text-rose-300 ring-rose-400/30; }
+  .badge-neutral { @apply badge bg-sky-400/15 text-sky-300 ring-sky-400/30; }
+
+  .page-title {
+    @apply font-display text-3xl font-bold tracking-tight text-white;
+  }
+  .section-title {
+    @apply mb-3 font-display text-lg font-semibold text-white;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-lime-300 via-emerald-300 to-cyan-300 bg-clip-text text-transparent;
+  }
+  .stat-number {
+    @apply font-display text-4xl font-bold tracking-tight bg-gradient-to-br from-white to-lime-300 bg-clip-text text-transparent;
+  }
+  .stat-number-warn {
+    @apply from-amber-200 to-orange-400;
+  }
+}
