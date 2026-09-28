@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import ContactForm from "@/components/ContactForm";
@@ -35,6 +36,13 @@ export default async function HelpPage() {
     <div className="grid md:grid-cols-2 gap-8">
       <div>
         <h1 className="page-title mb-4">Help</h1>
+        <Link href="/welcome" className="card mb-4 flex items-center gap-4">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-lime-400 text-xl text-slate-950" aria-hidden>▶</span>
+          <span>
+            <span className="block font-semibold text-white">Watch the how-to-play video</span>
+            <span className="block text-sm text-slate-400">A one-minute walkthrough of joining a game and making your picks.</span>
+          </span>
+        </Link>
         <div className="space-y-4">
           {faqs.map((f) => (
             <div key={f.q} className="card">

@@ -30,7 +30,7 @@ export default function RegisterForm() {
       setError("Account created, but automatic log in failed. Please log in manually.");
       return;
     }
-    router.push("/dashboard");
+    router.push("/welcome");
     router.refresh();
   }
 
